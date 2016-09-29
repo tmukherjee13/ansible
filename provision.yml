@@ -1,0 +1,16 @@
+---
+- hosts: vms
+  # user: vagrant
+  become: yes
+  roles:
+    # - base
+    - database
+    # - ufw
+    # - user
+    # - ssh
+    # - nginx
+    # - apache
+    # - php
+    # - mariadb
+    # - app
+    # - git-sync

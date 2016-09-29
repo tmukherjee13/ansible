@@ -1,0 +1,7 @@
+---
+- name: Checking that the variables are set
+  fail:
+    msg: "{{item}} is not defined"
+  when:  ({{item}} is undefined)
+  with_items:
+    - install_git
