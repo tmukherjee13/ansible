@@ -1,0 +1,131 @@
+---
+
+- name: Install php-fpm
+  when: (ansible_distribution_major_version < "16")
+  apt:
+    name: "{{ item }}"
+    state: present
+    # update_cache: yes
+  with_items:
+    - php5-cli
+    - php5-curl
+    - php5-fpm
+    - php5-intl
+    - php5-json
+    - php5-mcrypt
+    - php5-dev
+    - php5-gd
+    # - php5-mbstring
+    - php5-mcrypt
+    - php5-mysql
+    # - php5-opcache
+    # - php5-xml
+    - php5-xmlrpc
+    # - php5-zip
+
+- name: Install php-fpm
+  when: (ansible_distribution_major_version >= "16")
+  apt:
+    name: "{{ item }}"
+    state: present
+    # update_cache: yes
+  with_items:
+    - php-cli
+    - php-curl
+    - php-fpm
+    - php-intl
+    - php-json
+    - php-mcrypt
+    - php-dev
+    - php-gd
+    - php-mbstring
+    - php-mcrypt
+    - php-mysql
+    - php-opcache
+    - php-xml
+    - php-xmlrpc
+    - php-zip
+
+
+
+
+- name: Set PHP user
+  when: (ansible_distribution_major_version < "16" and set_web_server_user)
+  lineinfile: 
+    dest: /etc/php5/fpm/pool.d/www.conf
+    regexp: "^user"
+    line: "user = {{ web_server_user }}"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+
+- name: Set PHP group
+  when: (ansible_distribution_major_version < "16" and set_web_server_group)    
+  lineinfile: 
+    dest: /etc/php5/fpm/pool.d/www.conf
+    regexp: "^group"
+    line: "group = {{ web_server_group }}"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+
+- name: Use Socket instead of port
+  lineinfile: 
+    dest: /etc/php5/fpm/pool.d/www.conf
+    regexp: "^listen"
+    line: "listen = /var/run/php-fpm.sock"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+  
+- name: Set PHP listen owner    
+  lineinfile: 
+    dest: /etc/php5/fpm/pool.d/www.conf
+    regexp: "^listen\\.owner"
+    line: "listen.owner = {{ web_server_user }}"
+    state: present
+  when: set_web_server_user
+  notify: restart php
+  ignore_errors: yes
+
+- name: Set PHP listen group    
+  lineinfile: 
+    dest: /etc/php5/fpm/pool.d/www.conf
+    regexp: "^listen\\.group"
+    line: "listen.group = {{ web_server_group }}"
+    state: present
+  when: set_web_server_group
+  notify: restart php
+  ignore_errors: yes
+
+- name: Set PHP upload max filesize    
+  lineinfile: 
+    dest: /etc/php5/fpm/php.ini
+    regexp: "^upload_max_filesize"
+    line: "upload_max_filesize = 128M"
+    state: present
+  notify: reload php
+  ignore_errors: yes
+
+- name: Set PHP post max filesize    
+  lineinfile: 
+    dest: /etc/php5/fpm/php.ini
+    regexp: "^post_max_size"
+    line: "post_max_size = 128M"
+    state: present
+  notify: reload php
+  ignore_errors: yes
+
+- name: Ensure FPM cgi.fix_pathinfo=0
+  lineinfile:
+    dest: /etc/php5/fpm/php.ini
+    regexp: '^(.*)cgi.fix_pathinfo='
+    line: cgi.fix_pathinfo=0
+    state: present
+  notify: reload php
+  ignore_errors: yes
+
+- name: Copy index.php
+  copy:
+    src: index.php
+    dest: "{{ web_server_document_root }}/index.php"

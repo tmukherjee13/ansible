@@ -4,13 +4,15 @@
   become: yes
   roles:
     # - base
-    - database
-    # - ufw
     # - user
-    # - ssh
-    # - nginx
-    # - apache
-    # - php
-    # - mariadb
+    # - database
+    - nginx
+    # - php-fpm
     # - app
+    # 
+    # - apache
+    # - ufw
+    # - ssh
+    # - mariadb
+    - magento
     # - git-sync

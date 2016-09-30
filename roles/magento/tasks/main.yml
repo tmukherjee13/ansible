@@ -1,0 +1,19 @@
+---
+- name: Ensure can run file
+  copy:
+    src: mageinstall.conf
+    dest: "{{ web_server_document_root }}"
+    mode: 0755
+
+- name: Ensure can start installation
+  copy:
+    src: mageinstall.sh
+    dest: "{{ web_server_document_root }}"
+    mode: 0755
+
+- name: Installing magento
+  command: bash "{{ web_server_document_root }}/mageinstall.sh"
+
+- name: Create magento nginx configuration
+  template: src=magento.conf dest=/etc/nginx/sites-available/default
+  notify: restart nginx

@@ -11,28 +11,47 @@ install_git: false
 
 create_db: true
 create_db_user: true
-db_host: test
+db_host: 'localhost'
 db_port: 3306
-db_name: test
-db_user: test
-db_pass: test
+db_name: 'buyold'
+db_user: 'buyold'
+db_pass: 'buyme'
 
 
 ########
 # USER #
 ########
 
-username: tarun
-password: InuZ6/HkJkYOA
+create_user: true
+use_public_key: false
+username: 'tarun'
+password: 'InuZ6/HkJkYOA'
 public_key: ~/.ssh/id_rsa.pub
-sftp_user: 
-server_hostname: 192.168.1.2
-webserver_user: 
-webserver_group: 
 
-##########
-# APACHE #
-########## 
 
+################
+# APACHE/NGINX #
+################ 
+
+web_server_hostname: '_'
+web_server_document_root: '/var/www/html'
+web_server_port: 80
+web_server_secure_port: 443
+webserver_is_secure: false
+webserver_use_php: true
+set_web_server_user: true
+web_server_user: 'www-data'
+set_web_server_group: true
+web_server_group: 'www-data'
+
+
+
+###############
+# APPLICATION #
+###############
+
+application_name: 'test'
+application_repo: 'https://tmukherjee13@bitbucket.org/tmukherjee13/test.git'
+application_user: 'www-data'
 
 

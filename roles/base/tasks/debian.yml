@@ -10,6 +10,7 @@
     force: yes
   with_items:
   - fail2ban
+  - mcrypt
   # - ufw
 
 - name: Installing git
