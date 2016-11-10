@@ -1,5 +1,5 @@
 [vms]
-192.168.10.2 ansible_connection=ssh ansible_ssh_user=vagrant 
+192.168.10.11 ansible_connection=ssh ansible_ssh_user=vagrant 
 
 
 [ssh-keys]

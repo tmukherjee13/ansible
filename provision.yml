@@ -6,7 +6,7 @@
     # - base
     # - user
     # - database
-    - nginx
+    - {name: nginx, tags: nginx}
     # - php-fpm
     # - app
     # 
@@ -14,5 +14,6 @@
     # - ufw
     # - ssh
     # - mariadb
-    - magento
+    # - magento
     # - git-sync
+    - {name: gitlab, tags: gitlab}
