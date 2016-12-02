@@ -30,12 +30,22 @@
 
 
 - name: Create Application DB User
-  mysql_user: name={{db_user}} password={{db_pass}} host="%" priv={{db_name}}.*:ALL state=present
+  mysql_user:
+   name: "{{db_user}}"
+   password: "{{db_pass}}"
+   host: "%"
+   priv: "{{db_name}}.*:ALL"
+   state: present
   when: create_db_user
 
 
 - name: Update mysql root password for all root accounts
-  mysql_user: name=root password={{root_db_pass}} host="{{item}}" priv=*.*:ALL,GRANT state=present
+  mysql_user:
+    name: root
+    password: "{{root_db_pass}}"
+    host: "{{item}}"
+    priv: "*.*:ALL,GRANT"
+    state: present
   with_items:
     - "{{ansible_hostname}}"
     - 127.0.0.1
@@ -43,7 +53,11 @@
     - localhost
 
 - name: Create local my.cnf for root user
-  template: src=my.cnf.j2 dest=/root/.my.cnf owner=root mode=0600
+  template:
+   src: my.cnf.j2
+   dest: /root/.my.cnf
+   owner: root
+   mode: 0600
 
 
 # - name: Configure SELinux to start mysql on any port
