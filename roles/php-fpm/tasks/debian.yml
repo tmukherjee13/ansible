@@ -59,6 +59,16 @@
   notify: restart php
   ignore_errors: yes
 
+- name: Set PHP user
+  when: (ansible_distribution_major_version >= "16" and set_web_server_user)
+  lineinfile: 
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: "^user"
+    line: "user = {{ web_server_user }}"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+
 - name: Set PHP group
   when: (ansible_distribution_major_version < "16" and set_web_server_group)    
   lineinfile: 
@@ -69,11 +79,32 @@
   notify: restart php
   ignore_errors: yes
 
+- name: Set PHP group
+  when: (ansible_distribution_major_version >= "16" and set_web_server_group)    
+  lineinfile: 
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: "^group"
+    line: "group = {{ web_server_group }}"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+
 - name: Use Socket instead of port
+  when: (ansible_distribution_major_version < "16" and set_web_server_group) 
   lineinfile: 
     dest: /etc/php5/fpm/pool.d/www.conf
     regexp: "^listen"
     line: "listen = /var/run/php-fpm.sock"
+    state: present
+  notify: restart php
+  ignore_errors: yes
+
+- name: Use Socket instead of port
+  when: (ansible_distribution_major_version >= "16" and set_web_server_group)
+  lineinfile: 
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: "^listen"
+    line: "listen = /run/php/php7.0-fpm.sock"
     state: present
   notify: restart php
   ignore_errors: yes

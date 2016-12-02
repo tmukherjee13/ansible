@@ -5,9 +5,9 @@
   roles:
     # - base
     # - user
-    # - database
+    - {name: database, tags: mysql}
     - {name: nginx, tags: nginx}
-    # - php-fpm
+    - {name: php-fpm, tags: php}
     # - app
     # 
     # - apache
@@ -16,4 +16,4 @@
     # - mariadb
     # - magento
     # - git-sync
-    - {name: gitlab, tags: gitlab}
+    # - {name: gitlab, tags: gitlab}

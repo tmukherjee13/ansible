@@ -13,9 +13,10 @@ create_db: true
 create_db_user: true
 db_host: 'localhost'
 db_port: 3306
-db_name: 'buyold'
-db_user: 'buyold'
-db_pass: 'buyme'
+db_name: 'testapp'
+db_user: 'testapp'
+db_pass: 'test'
+root_db_pass: 'root'
 
 
 ########
